@@ -13,3 +13,19 @@ router.get("/health", (req, res) => {
 });
 
 module.exports = { router };
+
+const db = require("../db");
+
+router.get("/db/test", (req, res) => {
+  try {
+    const connection = db.connect();
+    const result = db.query("SELECT * FROM example_table");
+
+    res.json({
+      connection,
+      result
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
